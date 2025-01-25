@@ -32,6 +32,6 @@ if st.button("Predict"):
         )
 
     else:
-        response = requests.post(prediction_endpoint, data={"text": user_input})
+        response = requests.post(prediction_endpoint, json={"text": user_input})
         response = response.json()
         st.write(f"Predicted sentiment: {response['prediction']}")

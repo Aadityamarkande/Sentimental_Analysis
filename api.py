@@ -14,16 +14,13 @@ STOPWORDS = set(stopwords.words("english"))
 
 app = Flask(__name__)
 
-
 @app.route("/test", methods=["GET"])
 def test():
     return "Test request received successfully. Service is running."
 
-
 @app.route("/", methods=["GET", "POST"])
 def home():
     return render_template("landing.html")
-
 
 @app.route("/predict", methods=["POST"])
 def predict():
@@ -48,7 +45,6 @@ def predict():
             )
 
             response.headers["X-Graph-Exists"] = "true"
-
             response.headers["X-Graph-Data"] = base64.b64encode(
                 graph.getbuffer()
             ).decode("ascii")
@@ -65,7 +61,6 @@ def predict():
     except Exception as e:
         return jsonify({"error": str(e)})
 
-
 def single_prediction(predictor, scaler, cv, text_input):
     corpus = []
     stemmer = PorterStemmer()
@@ -80,7 +75,6 @@ def single_prediction(predictor, scaler, cv, text_input):
     y_predictions = y_predictions.argmax(axis=1)[0]
 
     return "Positive" if y_predictions == 1 else "Negative"
-
 
 def bulk_prediction(predictor, scaler, cv, data):
     corpus = []
@@ -108,7 +102,6 @@ def bulk_prediction(predictor, scaler, cv, data):
 
     return predictions_csv, graph
 
-
 def get_distribution_graph(data):
     fig = plt.figure(figsize=(5, 5))
     colors = ("green", "red")
@@ -121,7 +114,6 @@ def get_distribution_graph(data):
         autopct="%1.1f%%",
         shadow=True,
         colors=colors,
-        startangle=90,
         wedgeprops=wp,
         explode=explode,
         title="Sentiment Distribution",
@@ -135,13 +127,11 @@ def get_distribution_graph(data):
 
     return graph
 
-
 def sentiment_mapping(x):
     if x == 1:
         return "Positive"
     else:
         return "Negative"
-
 
 if __name__ == "__main__":
     app.run(port=5000, debug=True)
